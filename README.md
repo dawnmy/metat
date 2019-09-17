@@ -21,7 +21,7 @@ After this has been done, download the pipeline onto your system:
 git clone git@github.com:dawnmy/metat.git
 ```
 
-### Modify the config file: `config/config.yaml
+### Modify the config file: `config/config.yaml`
 All the paths must be either relative path to the parent directory of `config` folder or absolute path.
 
 ```yaml
@@ -30,8 +30,8 @@ fq_dir: ../data/seq # dir of the raw FASTQ files
 out_dir: ../outputs # dir to put the results
 paired: true # is paried end reads?
 suffix: # the suffixs of reads; the suffix is the comman suffix for all samples besides the sample name
-  - _R1.fastq.gz
-  - _R2.fastq.gz 
+  - *_R1.fastq.gz* # please keep the hyphen sign
+  - *_R2.fastq.gz* 
 # host_ref: ../ref/mouse.fa
 ref: ../ref/mouse_gut_gene_catalog.fa # The gene catalog for quantifying the expression
 threads: 20
