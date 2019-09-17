@@ -32,6 +32,16 @@ def get_pe_fq(wc):
 # def get_se_fq(wc):
 #     return path.join(fq_dir, wc.sample + ".fq.gz")
 
+def sortme_db(cd):
+    rrna, = glob_wildcards(cd + "/data/rRNA/fasta/{rrna}.fasta")
+    dbs = []
+    for i in rrna:
+        fa = path.join(cd, "data/rRNA/fasta/{}.fasta".format(i))
+        idx = path.join(cd, "data/rRNA/idx/{}".format(i))
+        dbs.append(",".join([fa, idx]))
+    return ":".join(dbs)
+
+sortme_dbs = sortme_db(cd)
 
 rule all:
     input:
@@ -52,6 +62,18 @@ rule build_idx:
         bwa index {input.ref}
         """
 
+rule sortme_idx:
+    input:
+        ref = ref
+    output:
+        touch(cd + "/data/rRNA/idx.done")
+    params:
+        bin_dir = path.join(cd, "libs/sortmerna"),
+        dbs = sortme_dbs
+    shell:
+        """
+        {params.bin_dir}/indexdb --ref {params.dbs}
+        """
 
 rule fastp:
         input:
@@ -69,21 +91,12 @@ rule fastp:
                 -5 20 -3 20 -l 30 -h {output.html} -w {threads}
             """
 
-def sortme_db(cd):
-    rrna, = glob_wildcards(cd + "/data/rRNA/fasta/{rrna}.fasta")
-    dbs = []
-    for i in rrna:
-        fa = path.join(cd, "data/rRNA/fasta/{}.fasta".format(i))
-        idx = path.join(cd, "data/rRNA/idx/{}".format(i))
-        dbs.append(",".join([fa, idx]))
-    return ":".join(dbs)
-
-sortme_dbs = sortme_db(cd)
 
 rule sortmerna:
     input:
         r1 = rules.fastp.output.or1,
-        r2 = rules.fastp.output.or2
+        r2 = rules.fastp.output.or2,
+        idx_done = cd + "/data/rRNA/idx.done"
     output:
         merged_in = qc_dir + "/{sample}.merged.fq",
         merged_out = qc_dir + "/mrna/{sample}.merged.fq",
