@@ -30,8 +30,8 @@ fq_dir: ../data/seq # dir of the raw FASTQ files
 out_dir: ../outputs # dir to put the results
 paired: true # is paried end reads?
 suffix: # the suffixs of reads; the suffix is the comman suffix for all samples besides the sample name
-  - *_R1.fastq.gz* # please keep the hyphen sign
-  - *_R2.fastq.gz* 
+  - _R1.fastq.gz # please keep the hyphen sign
+  - _R2.fastq.gz
 # host_ref: ../ref/mouse.fa
 ref: ../ref/mouse_gut_gene_catalog.fa # The gene catalog for quantifying the expression
 threads: 20
