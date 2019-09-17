@@ -4,7 +4,7 @@ out_dir: ../outputs
 paired: true
 suffix: # the suffixs of reads; the suffix is the comman suffix for all samples besides the sample name
   - _R1.fastq.gz
-  - _R2.fastq.gz # the suffixs of reads; the suffix is the comman suffix for all samples besides the sample name
+  - _R2.fastq.gz
 # host_ref: ../ref/mouse.fa
 ref: ../../dbs/gut_microbiome/IGC/IGC.fa #../ref/mouse_gut_gene_catalog.fa # The gene catalog for quantifying the expression
 threads: 20
